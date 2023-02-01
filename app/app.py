@@ -2,11 +2,14 @@ from sqlalchemy.orm import Session
 
 from fastapi import FastAPI, Depends, HTTPException
 
-from database import SessionLocal, engine
-import crud, models, schemas
+from app.db.database import SessionLocal, engine
+from app.db import schemas
+from app.routers.functions import crud
+from app.models import models
 
 models.Base.metadata.create_all(bind=engine)
 
+# Run app with uvicorn app.app:app --reload
 app = FastAPI()
 
 
@@ -20,7 +23,7 @@ def get_db():
 
 @app.get("/")
 def index():
-    return {"Hello": "World"}
+    return {"msg": "Hello World"}
 
 
 @app.get("/users", response_model=list[schemas.User])
